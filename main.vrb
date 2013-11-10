@@ -1,0 +1,12 @@
+\frametitle {Objects}
+  \begin{itemize}
+    \item Objects in Javascript are mutable keyed collections.
+    \item Arrays, functions and regular expressions are objects.
+    \item A property name can be any string.
+    \item Objects can inherit properties of another through its prototype.
+  \end{itemize}
+  \begin{block}{\texttt{Prototype}}
+    Every object is linked to a prototype object form which it can inherit properties. All objects created from object literals are linked to \texttt{Object.prototype}.
+
+    The prototype link is used only in retrieval. If we try to retrieve a property value from an object, and if the object lacks the property name, then Javascript attempts to retrieve the property value from the prototype object.
+  \end{block}

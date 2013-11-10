@@ -1,0 +1,240 @@
+\section{Stage 1: Introduction}
+
+\begin{frame}
+  \frametitle{Stage 1: Introduction}
+  Features:
+  \begin{itemize}
+    \item Loosely typed language
+    \item Object literal notation
+    \item Prototypal inheritance
+    \item Global variables
+    \item Functions are first class objects
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \begin{block}{ECMAScript}
+    The standard that defines JavaScript is the third edition of \textit{ECMAScript Programming Language}.
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Hello World}
+
+  \begin{block}{index.html}
+    {\scriptsize
+    \begin{verbatim}
+    <html>
+      <head>
+        <script>
+          document.writeln(``Hello, world!'');
+        </script>
+      </head>
+      <body>
+      </body>
+    </html>
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{Comments}
+  Block comments formed with /* */ and line-ending comments starting with //. Example:
+  {\scriptsize
+  \begin{verbatim}
+  /* 
+    We are learning Javascript and comments are very important
+  */
+  document.writeln(``Hello World!''); // Output: Hello World!
+  \end{verbatim}
+  }
+  \end{block}
+  
+  \begin{block}{Names}
+    Starts with a letter or underscore and optionally followed by on or more letters, digits or underscores. Beware of some reserved words.
+    {\scriptsize
+    \begin{verbatim}
+    bullet           // valid     _mana          // valid
+    weapon           // valid     life_          // valid
+    3force 	         // invalid   lucky42        // valid
+    rocket-launcher  // invalid   Hammer         // valid
+    grenade_launcher // valid     hammer         // valid, case sensitive
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{Numbers}
+    Single number type represented internally as 64-bit floating point.
+    {\scriptsize
+    \begin{verbatim}
+    1
+    1.0
+    3.141516
+    10e5
+    -5E-10
+    .123456
+    1/0 // Output: Infinity
+    0/0 // Output: NaN
+    \end{verbatim}
+    }
+  \end{block}
+
+  \begin{block}{Strings}
+    Can be wrapped in single quotes or double quotes. It can contains 0 or more characters. All characters in Javascript are 16 bits wide.
+    {\scriptsize
+    \begin{verbatim}
+    ``Hello World''
+    'Hello World'
+    ``This is\n a multiline string''
+    'You can write `` on single quotes string'
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{Variables}
+    Use the \texttt{var} keyword followed by a name to declare a variable. When used inside of a function, the \texttt{var} statement defines the function's private variables.
+    \scriptsize{
+    \begin{verbatim}
+    var player; // variable player declared on a global scope
+
+    function test() {
+        /* 
+            Variable enemy is visible on this function but 
+            we have access to variable player.
+        */
+        var enemy;
+
+        function test2() {
+            /* 
+                Variable bullet is visible on this function but 
+                we have access to player and enemy variables.
+            */
+            var bullet; 
+        }
+    }
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{\texttt{if}, \texttt{else}}
+    \scriptsize{
+    \begin{verbatim}
+    var testOk = true;
+
+    if (testOk) {
+        console.log(``Captain obvious'');
+    } else {
+        console.log(``I'm bored'');
+    }
+    \end{verbatim}
+    }
+    Here are the \textit{falsy} values:
+    \begin{itemize}
+      \item \texttt{false}
+      \item \texttt{null}
+      \item \texttt{undefined}
+      \item The empty string
+      \item The number 0
+      \item The number NaN
+    \end{itemize}
+    All other values are \textit{truthy}.
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{\texttt{switch}}
+    \scriptsize{
+    \begin{verbatim}
+    var weapon = ``rocketlauncher'';
+
+    switch(weapon) {
+        case ``pistol'':
+            console.log(``piu piu'');
+            break;
+        case ``shotgun'':
+            console.log(``paaam!'');
+            break;
+        case ``rocketlauncher''
+            console.log(``BOOOOM!'');
+            break;
+        default:
+            console.log(``falcon punch!'');
+            break;
+    }
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{\texttt{while}, \texttt{do while}}
+    \scriptsize{
+    \begin{verbatim}
+    var counter = 0;
+
+    while (counter < 10) { // Ends when counter is equal to 10
+        console.log(counter);
+        counter += 1;
+    }
+
+    do {
+        console.log(counter);
+        i -= 1;
+    } while(counter > 0); // Ends when counter is equal to 0
+    \end{verbatim}
+    }
+  \end{block}
+
+  \begin{block}{\texttt{for}}
+    \scriptsize{
+    \begin{verbatim}
+    var i;
+
+    for (i = 0; i < 10; i += 1)
+        console.log(i);
+    }
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{Literals}
+    \scriptsize{
+    \begin{verbatim}
+    var score = 9000;                                   // Number
+    var name = ``David'';                               // String
+    var weapons = [``Pistol'', ``Shotgun'', ``Sword'']; // Array
+    var player = {                                      // Object
+        name: ``Megaman'',
+        lifes: 3,
+        weapons: [``Buster'', ``Laser'']
+    };
+    var run = function (param1, param2) {               // Function
+    };
+    var validation = /^pro/;                            // Regexp
+    \end{verbatim}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Objects}
+  \begin{itemize}
+    \item Objects in Javascript are mutable keyed collections.
+    \item Arrays, functions and regular expressions are objects.
+    \item A property name can be any string.
+    \item Objects can inherit properties of another through its prototype.
+  \end{itemize}
+  \begin{block}{\texttt{Prototype}}
+    Every object is linked to a prototype object form which it can inherit properties. All objects created from object literals are linked to \texttt{Object.prototype}.
+
+    The prototype link is used only in retrieval. If we try to retrieve a property value from an object, and if the object lacks the property name, then Javascript attempts to retrieve the property value from the prototype object.
+  \end{block}
+\end{frame}
