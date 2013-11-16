@@ -89,4 +89,366 @@
 
 \begin{frame}[fragile]
   \frametitle{Functions}
+
+  Functions are the \textbf{fundamental modular unit} of Javascript. They are used for code reuse, information hiding, and composition. \\
+
+  The thing that is special about functions is that they can be invoked.
+  \pause
+
+  \begin{block}{Function.prototype and constructor}
+  Functions are objects linked to Function.prototype. Every function object is also created with a prototype property. Its value is an object with a constructor property whose value is the function.
+  \end{block}
+
+  \pause
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Functions}
+
+  Invoking a function suspends the execution of the current function, passing control and parameters to the new function. In addition to the declared parameters, every function receives two additional parameters: \texttt{this} and \texttt{arguments}.
+
+  \pause
+
+  \begin{block}{Invocation (1/4): Method invocation pattern}
+    {\scriptsize
+    \begin{verbatim}
+    var enemy = {
+        hp: 5,
+        rage: 0,
+        attack: function () {
+            this.rage += 1;
+        }
+    };
+
+    enemy.attack();
+    console.log(enemy.rage); // Output: 1
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Functions}
+
+  \begin{block}{Invocation (2/4): Function invocation pattern}
+    {\scriptsize
+    \begin{verbatim}
+    physicsManager.collisionsDetected = 0;
+
+    physicsManager.checkCollision = function (entity1, entity2) {
+        var bbCollision = function (bb1, bb2) {
+            var collision = false;
+            // Collision code skipped
+            if (collision) {
+                // WARNING: 'this' is the global object and not 'physicsManager'
+                this.collisionsDetected += 1;
+            }
+            return collision;
+        };
+
+        bbCollision(entity1.getBB(), entity2.getBB());
+    };
+
+    if (physicsManager.checkCollision(enemy, player)) {
+        player.takeDamage(enemy.strength);
+    }
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Functions}
+
+  \begin{block}{Invocation (2/4): Function invocation pattern (workaround)}
+    {\scriptsize
+    \begin{verbatim}
+    physicsManager.collisionsDetected = 0;
+
+    physicsManager.checkCollision = function (entity1, entity2) {
+        var that = this;
+
+        var bbCollision = function (bb1, bb2) {
+            var collision = false;
+            // Collision code skipped
+            if (collision) {
+                that.collisionsDetected += 1;
+            }
+            return collision;
+        };
+
+        bbCollision(entity1.getBB(), entity2.getBB());
+    };
+
+    if (physicsManager.checkCollision(enemy, player)) {
+        player.takeDamage(enemy.strength);
+    }
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Functions}
+
+  \begin{block}{Invocation (3/4): Constructor invocation pattern}
+    {\scriptsize
+    \begin{verbatim}
+    var Player = function (name) {
+        this.name = name;
+        this.lives = 3;
+    };
+
+    Player.prototype.sayMyName = function () {
+        console.log('My name is ' + this.name);
+    };
+
+    var david = new Player('David');
+    david.sayMyName(); // Output: 'My name is David'
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Functions}
+
+  \begin{block}{Invocation (3/4): Constructor invocation pattern (without new)}
+    {\scriptsize
+    \begin{verbatim}
+    var Player = function (name) {
+        this.name = name;
+        this.lives = 3;
+    };
+
+    Player.prototype.sayMyName = function () {
+        console.log('My name is ' + this.name);
+    };
+
+    var david = Player('David'); // oops
+    david.sayMyName(); // raise an error because david is undefined
+    
+    // Global variables feast
+    console.log(name); // Output: 'David'
+    console.log(lives); // Output: 3
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Functions}
+
+  \begin{block}{Invocation (4/4): Apply invocation pattern}
+    {\scriptsize
+    \begin{verbatim}
+    var enemy = {
+        rage: 0,
+        attack: function () {
+            this.rage += 1;
+        }
+    };
+
+    var anotherEnemy = {
+        rage: 10
+    };
+
+    enemy.attack.apply(anotherEnemy, []);
+
+    console.log(anotherEnemy.rage); // Output: 11
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Functions}
+
+  \begin{block}{\texttt{Arguments}}
+  {\scriptsize
+  \begin{verbatim}
+  function doActions() {
+      var i, l;
+
+      // WARNING: arguments is an Array-like object
+      for (i = 0, l = arguments.length; i < l; i += 1) {
+          console.log('Doing action ' + arguments[i]);
+      }
+  }
+
+  doActions('jump', 'attack');
+  /*
+      Output:
+      'Doing action jump'
+      'Doing action attack'
+  */
+  \end{verbatim}
+  }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Functions}
+
+  \begin{block}{Closure}
+  Javascript does have function scope. That means that the parameters and variables defined in a function are not visible outside of the function, and that a variable defined anywhere within a function is visible everywhere within the function.
+  {\scriptsize
+  \begin{verbatim}
+  var playe = new Player();
+
+  function isGameOver() {
+      var enemy = new Enemy();
+
+      function checkHit() {
+          return enemy.hit(player);
+      }
+
+      return checkHit();
+  }
+
+  isGameOver();
+  \end{verbatim}
+  }
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Functions}
+  \begin{block}{Module pattern}
+  {\scriptsize
+  \begin{verbatim}
+  var physicsModule = (function () { // IIEF pattern
+     var detectedCollisions = 0;
+
+     function checkBBCollision(bb1, bb2) {
+        var collision = false;
+        // collision code skipped
+        if (collision) {
+            detectedCollisions += 1;
+        }
+        return collision;
+     }
+
+     function checkCollision(entity1, entity2) {
+        checkBBCollision(entity1.getBB(), entity2.getBB());
+     }
+
+     return {
+        checkCollision: checkCollision
+     };
+  }());
+  \end{verbatim}
+  }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Inheritance}
+
+  Javascript provides a much richer set of code reuse patterns. It can ape the classical pattern, but it also supports other patterns that are more expressive.
+
+  \pause
+
+  \begin{block}{Javascript is a class-free language}
+    In classical languages, objects are instances of classes, and a class can inherit from another class. Javascript is a prototypal language, which means that objects inherit directly from other objects.
+  \end{block}
+  
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Inheritance}
+
+  \begin{block}{Pseudoclassical pattern}
+  {\tiny
+  \begin{verbatim}
+  var Alien = function (name) {
+      this.name = name;
+  };
+
+  Alien.prototype.talk = function () {
+      console.log('%?saf? ' + this.name);
+  };
+
+  var SmartAlien = function (name) {
+      this.name = name;
+  };
+
+  SmartAlien.prototype = new Alien();
+
+  SmartAlien.prototype.speech = function () {
+      this.talk();
+      console.log('...I mean, my name is ' + this.name);
+  };
+
+  var enemy = new SmartAlien('Roger');
+  enemy.speech(); 
+  // Output: '%?saf? Roger
+  //         ...I mean, my name is Roger'
+  \end{verbatim}
+  }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Inheritance}
+
+  \begin{block}{Prototypal pattern}
+  {\tiny
+  \begin{verbatim}
+  var alien = {
+      name: '%?&789',
+      talk: function () {
+          console.log('%&7?_% ' + this.name);
+      }
+  };
+
+  var smartAlien = Object.create(alien);
+  smartAlien.speech = function () {
+      this.talk();
+      console.log('...I mean, my name is ' + this.name);
+  };
+
+  var enemy = Object.create(smartAlien);
+  enemy.name = 'Roger';
+  enemy.speech(); 
+  // Output: '%?saf? Roger
+  //         ...I mean, my name is Roger'
+  \end{verbatim}
+  }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Inheritance}
+
+  \begin{block}{Functional pattern}
+  {\tiny
+  \begin{verbatim}
+  var alien = function (spec) {                         var smartAlien = function (spec) {
+      var that = {};                                        spec.weapon = 'Pistol'; // Private access
+                                                            var that = alien(spec);
+      var killHumans = function () { // Private access                                                             
+        console.log('*Using ' + spec.weapon + '*');         that.speech = function () {
+      };                                                        that.talk();
+                                                                console.log('...I mean, my name is ' +
+      that.talk = function () {                                   spec.name);
+          console.log('%&78 ' + spec.name);                 };                                                       
+          if (spec.weapon) {                                return that;
+              killHumans();                             };
+          }
+      };
+
+      return that;
+  };
+
+  var enemy = smartAlien({ name: 'Roger' });
+  enemy.speech(); 
+  // Output: '%?saf? Roger
+  //         ...I mean, my name is Roger'
+  //
+  // ...killing humans on the process
+  \end{verbatim}
+  }
+  \end{block}
 \end{frame}

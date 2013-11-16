@@ -136,10 +136,6 @@
 
     function test() {
         var enemy; // Scoped to function test
-
-        function test2() {
-            var bullet;  // Scoped to function test2
-        }
     }
     \end{verbatim}
     }
@@ -233,5 +229,39 @@
     }
     \end{verbatim}
     }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Syntax}
+
+  \begin{block}{Strict (in)equality}
+  {\scriptsize
+  \begin{verbatim}
+  10 == '10' // Output: true, auto type coercion
+  10 === '10' // Output: false strict equality
+  10 != '10' // Output: false, auto type coercion
+  10 !== '10' // Output: true strict inequality
+  \end{verbatim}
+  }
+  \end{block}
+
+  \pause
+
+  \begin{block}{\texttt{null} and \texttt{undefined}}
+  {\scriptsize
+  \begin{verbatim}
+  console.log(mario); // Error: mario is not defined
+
+  function exists (mario) {
+    console.log(mario);
+  }
+
+  exists(); // Output undefined
+
+  console.log(null == undefined) // Output: true 
+  console.log(null === undefined) // Output: false 
+  \end{verbatim}
+  }
   \end{block}
 \end{frame}
