@@ -38,7 +38,7 @@
     knight.shield = true;
 
     console.log(knight.hp); // Output: 10
-    console.log(knight.weapon); // Output: 'Sword'
+    console.log(knight['weapon']); // Output: 'Sword'
     console.log(knight.shield); // Output: true
     \end{verbatim}
     }
@@ -448,6 +448,54 @@
   //         ...I mean, my name is Roger'
   //
   // ...killing humans on the process
+  \end{verbatim}
+  }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Arrays}
+
+  \begin{block}{Arrays doesn't exist}
+  Javascript provides an object that has some array-like characteristics. It converts array subscripts into strings that are used to make properties.
+  \end{block}
+
+  \pause
+
+  \begin{block}{Arrays literals}
+  {\scriptsize
+  \begin{verbatim}
+  var enemies = [];
+
+  console.log(enemies[9999]); // Output: undefined
+
+  enemies[0] = 'Sigma';
+  console.log(enemies[0]); // Output: 'Sigma'
+
+  enemies[1] = 9000; // We can mix different types
+  console.log(enemies[1]); // Output: 9000
+
+  \end{verbatim}
+  }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Arrays}
+
+  \begin{block}{Remove elements}
+  {\scriptsize
+  \begin{verbatim}
+  var enemies = ['Grassman', 'Bowser', 'Sephirot'],
+      players = ['David', 'Manfred', 'Joanmi'];
+
+  delete enemies[1]; // Bad idea
+  console.log(enemies[1]); // Output: undefined
+  console.log(enemies.length); // Output: 3
+
+  players.splice(1, 1); // Yeah!
+  console.log(players[1]); // Output: 'Joanmi'
+  console.log(players.length); // Output: 2
   \end{verbatim}
   }
   \end{block}
