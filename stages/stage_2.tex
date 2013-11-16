@@ -1,0 +1,92 @@
+\section{Stage 2: The good parts}
+
+\begin{frame}[fragile]
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Objects}
+  \begin{itemize}
+    \item Objects in Javascript are mutable keyed collections.
+    \pause\item Arrays, functions and regular expressions are objects.
+    \pause\item A property name can be any string.
+    \pause\item Objects can inherit properties of another through its prototype.
+  \end{itemize}
+
+  \pause
+
+  \begin{block}{\texttt{Prototype}}
+    All objects created from object literals are linked to \texttt{Object.prototype}.
+    \pause
+
+    If we try to retrieve a property value from an object, and if the object lacks the property name, then Javascript attempts to retrieve the property value from the prototype object.
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Objects}
+  \begin{block}{\texttt{Object.create}}
+    {\scriptsize
+    \begin{verbatim}
+    var soldier = {
+        hp: 10,
+        strength: 5,
+        weapon: 'Pistol'
+    };
+
+    var knight = Object.create(soldier);
+    knight.weapon = 'Sword';
+    knight.shield = true;
+
+    console.log(knight.hp); // Output: 10
+    console.log(knight.weapon); // Output: 'Sword'
+    console.log(knight.shield); // Output: true
+    \end{verbatim}
+    }
+  \end{block}
+
+  Visit \url{http://www.objectplayground.com/} for a graphical explanation
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Objects}
+  \begin{block}{\texttt{hasOwnProperty}}
+    {\scriptsize
+    \begin{verbatim}
+    knight.hasOwnProperty('hp'); // Output: false
+    knight.hasOwnProperty('shield'); // Output: true
+    \end{verbatim}
+    }
+  \end{block}
+
+  \pause
+
+  \begin{block}{\texttt{for in}}
+    {\scriptsize
+    \begin{verbatim}
+    for (attr in knight) {
+        if(knigth.hasOwnProperty(attr)) {
+            console.log('Knight property ' + attr + ' with value ' + 
+                knight[attr]);  
+        }
+    }
+    // Output: Knight property shield with value true
+    \end{verbatim}
+    }
+  \end{block}
+  
+  \pause
+
+  \begin{block}{\texttt{delete}}
+    {\scriptsize
+    \begin{verbatim}
+    console.log(knight.weapon); // Output: 'Sword'
+    delete knight.weapon;
+    console.log(knight.weapon); // Output: 'Pistol'
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Functions}
+\end{frame}

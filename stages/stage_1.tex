@@ -1,18 +1,23 @@
 \section{Stage 1: Introduction}
 
 \begin{frame}
-  \frametitle{Stage 1: Introduction}
-  Features:
+\end{frame}
+
+\begin{frame}
+  \frametitle{Features}
+
   \begin{itemize}
     \item Loosely typed language
-    \item Object literal notation
-    \item Prototypal inheritance
-    \item Global variables
-    \item Functions are first class objects
+    \pause\item Object literal notation
+    \pause\item Prototypal inheritance
+    \pause\item Global variables
+    \pause\item Functions are first class objects
   \end{itemize}
 \end{frame}
 
 \begin{frame}
+  \frametitle{Features}
+
   \begin{block}{ECMAScript}
     The standard that defines JavaScript is the third edition of \textit{ECMAScript Programming Language}.
   \end{block}
@@ -39,6 +44,8 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitle{Syntax}
+
   \begin{block}{Comments}
   Block comments formed with /* */ and line-ending comments starting with //. Example:
   {\scriptsize
@@ -50,37 +57,38 @@
   \end{verbatim}
   }
   \end{block}
+
+  \pause
   
   \begin{block}{Names}
     Starts with a letter or underscore and optionally followed by on or more letters, digits or underscores. Beware of some reserved words.
     {\scriptsize
     \begin{verbatim}
-    bullet           // valid     _mana          // valid
-    weapon           // valid     life_          // valid
-    3force 	         // invalid   lucky42        // valid
-    rocket-launcher  // invalid   Hammer         // valid
-    grenade_launcher // valid     hammer         // valid, case sensitive
+    bullet           // valid     _mana            // valid
+    3force 	         // invalid   lucky42          // valid
+    rocket-launcher  // invalid   grenade_launcher // valid
     \end{verbatim}
     }
   \end{block}
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitle{Syntax}
+
   \begin{block}{Numbers}
     Single number type represented internally as 64-bit floating point.
     {\scriptsize
     \begin{verbatim}
-    1
-    1.0
+    42 
     3.141516
     10e5
-    -5E-10
-    .123456
     1/0 // Output: Infinity
     0/0 // Output: NaN
     \end{verbatim}
     }
   \end{block}
+
+  \pause
 
   \begin{block}{Strings}
     Can be wrapped in single quotes or double quotes. It can contains 0 or more characters. All characters in Javascript are 16 bits wide.
@@ -96,25 +104,41 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitle{Syntax}
+
+  \begin{block}{Functions}
+  {\scriptsize
+  \begin{verbatim}
+  function helloWorld (name) {
+      console.log('Hello ' + name + '!');
+  }
+
+  helloWorld('David'); // Output 'Hello David!'
+
+  var myFunction = function () {
+      console.log('Hi there!');
+  };
+
+  myFunction(); // Output: 'Hi there!'
+  \end{verbatim}
+  }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Syntax}
+
   \begin{block}{Variables}
     Use the \texttt{var} keyword followed by a name to declare a variable. When used inside of a function, the \texttt{var} statement defines the function's private variables.
-    \scriptsize{
+    {\scriptsize
     \begin{verbatim}
     var player; // variable player declared on a global scope
 
     function test() {
-        /* 
-            Variable enemy is visible on this function but 
-            we have access to variable player.
-        */
-        var enemy;
+        var enemy; // Scoped to function test
 
         function test2() {
-            /* 
-                Variable bullet is visible on this function but 
-                we have access to player and enemy variables.
-            */
-            var bullet; 
+            var bullet;  // Scoped to function test2
         }
     }
     \end{verbatim}
@@ -123,6 +147,8 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitle{Syntax}
+
   \begin{block}{\texttt{if}, \texttt{else}}
     \scriptsize{
     \begin{verbatim}
@@ -149,6 +175,8 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitle{Syntax}
+
   \begin{block}{\texttt{switch}}
     \scriptsize{
     \begin{verbatim}
@@ -174,11 +202,12 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitle{Syntax}
+
   \begin{block}{\texttt{while}, \texttt{do while}}
     \scriptsize{
     \begin{verbatim}
     var counter = 0;
-
     while (counter < 10) { // Ends when counter is equal to 10
         console.log(counter);
         counter += 1;
@@ -192,8 +221,10 @@
     }
   \end{block}
 
+  \pause
+
   \begin{block}{\texttt{for}}
-    \scriptsize{
+    {\scriptsize
     \begin{verbatim}
     var i;
 
@@ -202,39 +233,5 @@
     }
     \end{verbatim}
     }
-  \end{block}
-\end{frame}
-
-\begin{frame}[fragile]
-  \begin{block}{Literals}
-    \scriptsize{
-    \begin{verbatim}
-    var score = 9000;                                   // Number
-    var name = ``David'';                               // String
-    var weapons = [``Pistol'', ``Shotgun'', ``Sword'']; // Array
-    var player = {                                      // Object
-        name: ``Megaman'',
-        lifes: 3,
-        weapons: [``Buster'', ``Laser'']
-    };
-    var run = function (param1, param2) {               // Function
-    };
-    var validation = /^pro/;                            // Regexp
-    \end{verbatim}
-  \end{block}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Objects}
-  \begin{itemize}
-    \item Objects in Javascript are mutable keyed collections.
-    \item Arrays, functions and regular expressions are objects.
-    \item A property name can be any string.
-    \item Objects can inherit properties of another through its prototype.
-  \end{itemize}
-  \begin{block}{\texttt{Prototype}}
-    Every object is linked to a prototype object form which it can inherit properties. All objects created from object literals are linked to \texttt{Object.prototype}.
-
-    The prototype link is used only in retrieval. If we try to retrieve a property value from an object, and if the object lacks the property name, then Javascript attempts to retrieve the property value from the prototype object.
   \end{block}
 \end{frame}
