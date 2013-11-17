@@ -52,8 +52,8 @@
   \begin{block}{\texttt{hasOwnProperty}}
     {\scriptsize
     \begin{verbatim}
-    knight.hasOwnProperty('hp'); // Output: false
-    knight.hasOwnProperty('shield'); // Output: true
+    console.log(knight.hasOwnProperty('hp')); // Output: false
+    console.log(knight.hasOwnProperty('shield')); // Output: true
     \end{verbatim}
     }
   \end{block}
@@ -64,12 +64,13 @@
     {\scriptsize
     \begin{verbatim}
     for (attr in knight) {
-        if(knigth.hasOwnProperty(attr)) {
+        if(knight.hasOwnProperty(attr)) {
             console.log('Knight property ' + attr + ' with value ' + 
                 knight[attr]);  
         }
     }
-    // Output: Knight property shield with value true
+    // Knight property weapon with value 'Sword'
+    // Knight property shield with value true
     \end{verbatim}
     }
   \end{block}
@@ -131,14 +132,14 @@
   \frametitle{Functions}
 
   \begin{block}{Invocation (2/4): Function invocation pattern}
-    {\scriptsize
+    {\tiny
     \begin{verbatim}
+    // part of code omitted
     physicsManager.collisionsDetected = 0;
-
     physicsManager.checkCollision = function (entity1, entity2) {
         var bbCollision = function (bb1, bb2) {
-            var collision = false;
-            // Collision code skipped
+            // Collision code omitted
+            var collision = true;
             if (collision) {
                 // WARNING: 'this' is the global object and not 'physicsManager'
                 this.collisionsDetected += 1;
@@ -152,6 +153,8 @@
     if (physicsManager.checkCollision(enemy, player)) {
         player.takeDamage(enemy.strength);
     }
+
+    console.log(physicsManager.collisionsDetected); // Output: 0
     \end{verbatim}
     }
   \end{block}
@@ -169,8 +172,8 @@
         var that = this;
 
         var bbCollision = function (bb1, bb2) {
-            var collision = false;
-            // Collision code skipped
+            // Collision code omitted
+            var collision = true;
             if (collision) {
                 that.collisionsDetected += 1;
             }
@@ -183,6 +186,8 @@
     if (physicsManager.checkCollision(enemy, player)) {
         player.takeDamage(enemy.strength);
     }
+
+    console.log(physicsManager.collisionsDetected); // Output: 1
     \end{verbatim}
     }
   \end{block}
@@ -225,11 +230,15 @@
         console.log('My name is ' + this.name);
     };
 
-    var david = Player('David'); // oops
-    david.sayMyName(); // raise an error because david is undefined
+    var manfred = Player('Manfred'); // oops
+    try {
+        manfred.sayMyName(); // raise an error because manfred is undefined
+    } catch (e) {
+        console.log('[' + e.name + '] ' + e.message);
+    }
     
     // Global variables feast
-    console.log(name); // Output: 'David'
+    console.log(name); // Output: 'Manfred'
     console.log(lives); // Output: 3
     \end{verbatim}
     }
@@ -294,7 +303,7 @@
   Javascript does have function scope. That means that the parameters and variables defined in a function are not visible outside of the function, and that a variable defined anywhere within a function is visible everywhere within the function.
   {\scriptsize
   \begin{verbatim}
-  var playe = new Player();
+  var player = new Player();
 
   function isGameOver() {
       var enemy = new Enemy();
@@ -316,7 +325,7 @@
 \begin{frame}[fragile]
   \frametitle{Functions}
   \begin{block}{Module pattern}
-  {\scriptsize
+  {\tiny
   \begin{verbatim}
   var physicsModule = (function () { // IIEF pattern
      var detectedCollisions = 0;
@@ -338,6 +347,10 @@
         checkCollision: checkCollision
      };
   }());
+
+  console.log(physicsModule.detectedCollisions); // Output: undefined
+  console.log(physicsModule.checkBBCollision); // Output: undefined
+  console.log(typeof physicsModule.checkCollision); // Output: 'function'
   \end{verbatim}
   }
   \end{block}
@@ -399,7 +412,7 @@
   var alien = {
       name: '%?&789',
       talk: function () {
-          console.log('%&7?_% ' + this.name);
+          console.log('%?saf? ' + this.name);
       }
   };
 
@@ -445,9 +458,8 @@
   var enemy = smartAlien({ name: 'Roger' });
   enemy.speech(); 
   // Output: '%?saf? Roger
+  //         *Using Pistol*
   //         ...I mean, my name is Roger'
-  //
-  // ...killing humans on the process
   \end{verbatim}
   }
   \end{block}
