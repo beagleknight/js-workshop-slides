@@ -101,7 +101,7 @@
         });
 
         grunt.loadNpmTasks('grunt-contrib-jshint');
-        grunt.registerTask('default', ['jshint']);                                          
+        grunt.registerTask('default', ['jshint']);
     };
     \end{verbatim}
     }
@@ -159,5 +159,204 @@
     // Same output
     \end{verbatim}
   }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Watch}
+
+  Running \texttt{grunt} or \texttt{grunt jshint} command manually is a bit painful. We can automate this process using another grunt plugin.
+
+  \pause
+
+  \begin{block}{\texttt{grunt-contrib-watch}}
+    {\tiny
+    \begin{verbatim}
+    $ npm install grunt-contrib-watch --save-dev
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Watch}
+
+  \begin{block}{\texttt{Gruntfile.js}}
+    {\tiny
+    \begin{verbatim}
+    module.exports = function (grunt) {
+        grunt.initConfig({
+            // other plugin configurations omitted
+            watch: {
+                jshint: {
+                    files: ['js/**/*.js'],
+                    tasks: ['jshint']
+                }
+            }
+        });
+
+        // other loading npm tasks omitted
+        grunt.loadNpmTasks('grunt-contrib-watch');
+
+        grunt.registerTask('default', ['jshint']);
+    };
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Watch}
+
+  \begin{block}{Running task}
+    {\tiny
+    \begin{verbatim}
+    $ grunt watch
+    Running ``watch'' task
+    Waiting...OK
+    >> File ``js/main.js'' changed.
+
+    Running ``jshint:all'' (jshint) task
+    Linting js/main.js ...ERROR
+    [L1:C1] W117: '$' is not defined.
+    $(function ( {
+    [L29:C18] W117: '$' is not defined.
+      var el = $(``#'' + character.id);
+    [L50:C18] W117: '$' is not defined.
+      var el = $(``#'' + character.id);
+
+    Warning: Task ``jshint:all'' failed. Use --force to continue.
+
+    Aborted due to warnings.
+    Completed in 0.646s at Sun Nov 17 2013 17:23:21 GMT+0100 (CET) - Waiting...
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Concat}
+
+  You can concat your scripts file using \texttt{grunt} in order to make fewer HTTP requests.
+
+  \pause
+
+  \begin{block}{\texttt{grunt-contrib-concat}}
+    {\tiny
+    \begin{verbatim}
+    $ npm install grunt-contrib-concat --save-dev
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Concat}
+
+  \begin{block}{\texttt{Gruntfile.js}}
+    {\tiny
+    \begin{verbatim}
+    module.exports = function (grunt) {
+        grunt.initConfig({
+            // other plugin configurations omitted
+            concat: {
+                options: {
+                    separator: ';'
+                },
+                dist: {
+                    src: ['bower_components/jquery/jquery.js', 'js/main.js'],
+                    dest: 'build/built.js'
+                }
+            }
+        });
+
+        // other loading npm tasks omitted
+        grunt.loadNpmTasks('grunt-contrib-concat');
+
+        grunt.registerTask('default', ['jshint', 'concat']);
+    };
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Concat}
+
+  \begin{block}{Running task}
+    {\tiny
+    \begin{verbatim}
+    $ grunt concat
+    Running ``concat:dist'' (concat) task
+    File ``dist/built.js'' created.
+
+    Done, without errors.
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Uglify}
+
+  You can optimize your scripts using \texttt{grunt} in order to minimize its size. Combine with \texttt{concat} for better results.
+
+  \pause
+
+  \begin{block}{\texttt{grunt-contrib-uglify}}
+    {\tiny
+    \begin{verbatim}
+    $ npm install grunt-contrib-uglify --save-dev
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Uglify}
+
+  \begin{block}{\texttt{Gruntfile.js}}
+    {\tiny
+    \begin{verbatim}
+    module.exports = function (grunt) {
+        grunt.initConfig({
+            // other plugin configurations omitted
+            uglify: {
+                build: {
+                    files: {
+                      'dist/built.js.min': 'dist/built.js'
+                    }
+                }
+            }
+        });
+
+        // other loading npm tasks omitted
+        grunt.loadNpmTasks('grunt-contrib-uglify');
+
+        grunt.registerTask('default', ['jshint', 'concat', 'uglify']);
+    };
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Uglify}
+
+  \begin{block}{Running task}
+    {\tiny
+    \begin{verbatim}
+    $ grunt uglify
+    Running ``uglify:build'' (uglify) task
+    File ``dist/built.js.min'' created.
+
+    Done, without errors.
+
+    $ ls -l dist
+    total 328
+    -rw-rw-r-- 1 david david 247260 Nov 17 18:05 built.js
+    -rw-rw-r-- 1 david david  84949 Nov 17 18:12 built.js.min
+    \end{verbatim}
+    }
   \end{block}
 \end{frame}
