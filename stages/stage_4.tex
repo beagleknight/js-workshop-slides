@@ -1,0 +1,163 @@
+\section{Stage 4: Automate your workflow with Grunt}
+
+\begin{frame}[fragile]
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{What is Grunt?}
+  \begin{block}{Definition}
+    Grunt is a Javascript Task Runner. Simplify your life automating tedious tasks like minification, compilation, unit testing, etc. There are a lot of available Grunt plugins, take a look to the plugin directory at \url{http://gruntjs.com/plugins}.
+  \end{block}
+
+  \begin{center}
+    \includegraphics[width=100px]{images/grunt.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Installation}
+
+  \begin{block}{Using npm}
+  {\scriptsize
+    \begin{verbatim}
+    $ npm install -g grunt-cli
+    \end{verbatim}
+  }
+  \end{block}
+
+  \pause
+
+  \begin{block}{\texttt{Gruntfile.js} and \texttt{package.json}}
+    Grunt needs a \texttt{Gruntfile.js} on your project's directory in order to work. Also, we need a \texttt{package.json} (similar to our \texttt{bower.json} but for our server-side dependencies) to add our Grunt plugins as a dependencies for our project.
+  {\scriptsize
+    \begin{verbatim}
+    $ npm init
+    // Default answers
+    $ npm install grunt --save-dev
+    \end{verbatim}
+  }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Gruntfile.js}
+
+  \begin{block}{Basic Gruntfile.js}
+  {\scriptsize
+  \begin{verbatim}
+  module.exports = function (grunt) {  
+      grunt.registerTask('default', []);
+  };
+  \end{verbatim}
+  }
+  \end{block}
+
+  \pause
+
+  \begin{block}{Run default task}
+  {\scriptsize
+  \begin{verbatim}
+  $ grunt
+  Done, without errors
+  \end{verbatim}
+  }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{JSHint}
+
+  JSHint is a tool that helps to detect errors and potential problems in your Javascript code.
+
+  \pause
+
+  \begin{block}{\texttt{grunt-contrib-jshint}}
+    {\tiny
+    \begin{verbatim}
+    $ npm install grunt-contrib-jshint --save-dev
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{JSHint}
+
+  \begin{block}{\texttt{Gruntfile.js}}
+    {\tiny
+    \begin{verbatim}
+    module.exports = function (grunt) {
+        grunt.initConfig({
+            jshint: {
+                all: {
+                    options: {
+                        jshintrc: '.jshintrc'                                               
+                    },
+                    files: {
+                        src: ['Gruntfile.js', 'js/**/*.js']
+                    }
+                }
+            }
+        });
+
+        grunt.loadNpmTasks('grunt-contrib-jshint');
+        grunt.registerTask('default', ['jshint']);                                          
+    };
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{JSHint}
+  \begin{block}{\texttt{.jshintrc}}
+    {\tiny
+    \begin{verbatim}
+      {
+        ``curly'': true,
+        ``eqeqeq'': true,
+        ``immed'': true, 
+        ``latedef'': true,
+        ``newcap'': true,   
+        ``noarg'': true,
+        ``sub'': true,  
+        ``undef'': true,    
+        ``unused'': true,
+        ``boss'': true,
+        ``eqnull'': true,
+        ``browser'': true,
+        ``node'': true,
+        ``expr'': true,
+        ``globals'': {
+        } 
+      }
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{JSHint}
+  \begin{block}{Running task}
+  {\scriptsize
+    \begin{verbatim}
+    $ grunt jshint:all
+    Running ``jshint:all'' (jshint) task
+    Linting js/main.js ...ERROR
+    [L1:C1] W117: '$' is not defined.
+    $(function ( {
+    [L29:C18] W117: '$' is not defined.
+      var el = $(``#'' + character.id);
+    [L50:C18] W117: '$' is not defined.
+      var el = $("#" + character.id);
+
+    Warning: Task ``jshint:all'' failed. Use --force to continue.
+    Aborted due to warnings.
+    $ grunt jshint
+    // Same output
+    $ grunt
+    // Same output
+    \end{verbatim}
+  }
+  \end{block}
+\end{frame}
