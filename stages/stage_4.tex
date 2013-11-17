@@ -324,7 +324,7 @@
             uglify: {
                 build: {
                     files: {
-                      'dist/built.js.min': 'dist/built.js'
+                      'dist/built.min.js': 'dist/built.js'
                     }
                 }
             }
@@ -348,14 +348,14 @@
     \begin{verbatim}
     $ grunt uglify
     Running ``uglify:build'' (uglify) task
-    File ``dist/built.js.min'' created.
+    File ``dist/built.min.js'' created.
 
     Done, without errors.
 
     $ ls -l dist
     total 328
     -rw-rw-r-- 1 david david 247260 Nov 17 18:05 built.js
-    -rw-rw-r-- 1 david david  84949 Nov 17 18:12 built.js.min
+    -rw-rw-r-- 1 david david  84949 Nov 17 18:12 built.min.js
     \end{verbatim}
     }
   \end{block}
