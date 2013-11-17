@@ -23,6 +23,12 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitle{Game loop}
+
+  \ldots
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitle{HTML5}
 
   First of all, HTML5 is not a programming language, neither an API. It's the 5th revision of HTML but also an umbrella term about 100 specifications for the next generation web applications.
@@ -186,5 +192,37 @@
   \end{verbatim}
   }
   \end{block}
+\end{frame}
 
+\begin{frame}[fragile]
+  \frametitle{\texttt{requestAnimationFrame}}
+
+  Our game must run on 60 fps (frames per second) in order to be smoothly. It means, we must execute the game loop 60 times each second or 1 time each 1000 / 60 milliseconds.
+
+  \pause
+
+  \begin{block}{Using \texttt{setInterval}}
+  {\scriptsize
+  \begin{verbatim}
+    setInterval(function () {
+        console.log(``Game loop!'');
+    }, 1000 / 60);
+  \end{verbatim}
+  }
+  \end{block}
+
+  \pause
+
+  \begin{block}{Using \texttt{requestAnimationFrame}}
+  {\scriptsize
+  \begin{verbatim}
+    function gameLoop() {
+      requestAnimationFrame(gameLoop);
+      console.log(``Game loop!'');
+    }
+
+    gameLoop();
+  \end{verbatim}
+  }
+  \end{block}
 \end{frame}
