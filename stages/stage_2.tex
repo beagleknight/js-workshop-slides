@@ -52,6 +52,13 @@
 
 \begin{frame}[fragile]
   \frametitle{Objects}
+  \begin{center}
+    \includegraphics[width=300px]{images/object_create.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Objects}
   \begin{block}{\texttt{hasOwnProperty}}
     {\scriptsize
     \begin{verbatim}
@@ -99,11 +106,16 @@
   The thing that is special about functions is that they can be invoked.
   \pause
 
-  \begin{block}{Function.prototype and constructor}
-  Functions are objects linked to Function.prototype. Every function object is also created with a prototype property. Its value is an object with a constructor property whose value is the function.
+  \begin{block}{Function.prototype}
+  Functions are objects linked to Function.prototype.
   \end{block}
+\end{frame}
 
-  \pause
+\begin{frame}[fragile]
+  \frametitle{Functions}
+  \begin{center}
+    \includegraphics[width=300px]{images/function_prototype.png}
+  \end{center}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -113,6 +125,14 @@
 
   \pause
 
+  \begin{block}{\texttt{this}}
+    Receive the value of the object invoking the function or the global object if it's called without an object.
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Functions}
   \begin{block}{Invocation (1/4): Method invocation pattern}
     {\scriptsize
     \begin{verbatim}
@@ -137,7 +157,6 @@
   \begin{block}{Invocation (2/4): Function invocation pattern}
     {\tiny
     \begin{verbatim}
-    // part of code omitted
     physicsManager.collisionsDetected = 0;
     physicsManager.checkCollision = function (entity1, entity2) {
         var bbCollision = function (bb1, bb2) {
@@ -167,10 +186,9 @@
   \frametitle{Functions}
 
   \begin{block}{Invocation (2/4): Function invocation pattern (workaround)}
-    {\scriptsize
+    {\tiny
     \begin{verbatim}
     physicsManager.collisionsDetected = 0;
-
     physicsManager.checkCollision = function (entity1, entity2) {
         var that = this;
 
@@ -216,6 +234,13 @@
     \end{verbatim}
     }
   \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Functions}
+  \begin{center}
+    \includegraphics[width=300px]{images/basic_class.png}
+  \end{center}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -327,33 +352,38 @@
 
 \begin{frame}[fragile]
   \frametitle{Functions}
+  \begin{block}{Immediately-Invoked Function Expression (IIFE)}
+  {\scriptsize
+  \begin{verbatim}
+  var something = (function () {
+      // some code
+  }());
+  \end{verbatim}
+  }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Functions}
   \begin{block}{Module pattern}
   {\tiny
   \begin{verbatim}
-  var physicsModule = (function () { // IIEF pattern
+  var MYAPP = MYAPP || {};
+  (function (exports) {
      var detectedCollisions = 0;
 
      function checkBBCollision(bb1, bb2) {
-        var collision = false;
-        // collision code skipped
-        if (collision) {
-            detectedCollisions += 1;
-        }
-        return collision;
+        // some code
      }
 
      function checkCollision(entity1, entity2) {
         checkBBCollision(entity1.getBB(), entity2.getBB());
      }
 
-     return {
+     exports.physicsModule = {
         checkCollision: checkCollision
      };
-  }());
-
-  console.log(physicsModule.detectedCollisions); // Output: undefined
-  console.log(physicsModule.checkBBCollision); // Output: undefined
-  console.log(typeof physicsModule.checkCollision); // Output: 'function'
+  }(MYAPP));
   \end{verbatim}
   }
   \end{block}
@@ -404,6 +434,13 @@
   \end{verbatim}
   }
   \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Functions}
+  \begin{center}
+    \includegraphics[width=300px]{images/classical_pattern.png}
+  \end{center}
 \end{frame}
 
 \begin{frame}[fragile]
