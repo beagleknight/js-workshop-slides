@@ -1,0 +1,174 @@
+\section{Stage 7: Events, events everywhere: The Javascript Event Loop}
+
+\begin{frame}[fragile]
+  \begin{center}
+    %\includegraphics[width=300px]{images/map_stage_6.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Event Loop}
+  \begin{block}{Event Loop}
+    JavaScript has a concurrency model based on an ``event loop''. This model is quite different than the model in other languages like C or Java.
+    {\scriptsize
+    \begin{verbatim}
+      while(queue.waitForMessage()) {
+        queue.processNextMessage();
+      }
+    \end{verbatim}
+    }
+    \pause
+    A very interesting property of the event loop model is that JavaScript, unlike a lot of other languages, never blocks.
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Event Loop}
+
+  \begin{block}{Example}
+    {\tiny
+    \begin{verbatim}
+    var now = +new Date();
+
+    setTimeout(function () {
+        var dt = (+new Date()) - now;
+        console.log('First timeout');
+        console.log('Elapsed time: ' + dt + ' milliseconds');
+    }, 500);
+
+    setTimeout(function () {
+        var dt = (+new Date()) - now,
+            i = 0;
+        console.log('Second timeout');
+        console.log('Elapsed time: ' + dt + ' milliseconds');
+        while(i < 1000000000) {
+          i += 1;
+        }
+    }, 250);
+    \end{verbatim}
+    }
+  \end{block}
+
+  \pause
+
+  \begin{block}{Output}
+    {\tiny
+    \begin{verbatim}
+    Second timeout
+    Elapsed time: 252 milliseconds
+    First timeout
+    Elapsed time: 1271 milliseconds
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{DOM Events}
+
+  When an event happens, the browser sends the event to the related element. If you've set a handler (a function) on that element, it gets called with related event info which means you 'handled' the event.
+
+  \pause
+
+  \begin{block}{The old way}
+    {\scriptsize
+    \begin{verbatim}
+    var blueSoldierSeat = document.getElementById('blue-soldier-seat');
+    blueSoldierSeat.onclick = function (event) {
+        // code omitted
+    };
+    \end{verbatim}
+    }
+  \end{block}
+
+  \pause
+
+  \begin{block}{The classy way}
+    {\scriptsize
+    \begin{verbatim}
+    var blueSoldierSeat = document.getElementById('blue-soldier-seat');
+    blueSoldierSeat.addEventListener('click', function (event) {
+        // code omitted
+    });
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{DOM Events}
+
+  \begin{block}{The jQuery way \#1}
+    {\scriptsize
+    \begin{verbatim}
+    var $blueSoldierSeat = $('#blue-soldier-seat');
+    $blueSoldierSeat.click(function (event) {
+        // code omitted
+    });
+    \end{verbatim}
+    }
+  \end{block}
+
+  \pause
+
+  \begin{block}{The jQuery way \#2}
+    {\scriptsize
+    \begin{verbatim}
+    var $blueSoldierSeat = $('#blue-soldier-seat');
+    $blueSoldierSeat.on('click', function (event) {
+        // code omitted
+    });
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Custom Events}
+
+  We can use a library or implement our own functions for listening and triggering custom events.
+
+  \pause
+
+  \begin{block}{With jQuery \texttt{on} and \texttt{trigger}}
+    {\scriptsize
+    \begin{verbatim}
+    var tree = {
+        apples: 10
+    };
+
+    $(document).on('apple fall', function (event) {
+        tree.apples -= 1;
+    });
+
+    $(document).trigger('apple fall');
+
+    console.log(tree.apples); // Output: 9
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Custom Events}
+  \begin{block}{With library \texttt{IndigoUnited/events-emitter}}
+    {\scriptsize
+    \begin{verbatim}
+    // Require.js code omitted
+    var EventsEmitter  = require('events-emitter/EventsEmitter'),
+        emitter        = new EventsEmitter(),
+        tree           = {
+            apples: 10
+        };
+
+    emitter.on('apple fall', function (event) {
+        tree.apples -= 1;
+    });
+
+    emitter.emit('apple fall');
+
+    console.log(tree.apples); // Output: 9
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
