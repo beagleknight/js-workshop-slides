@@ -1,0 +1,174 @@
+\section{Stage 6: Refactor our client-side code with Require.js}
+
+\begin{frame}[fragile]
+  \begin{center}
+    %\includegraphics[width=300px]{images/map_stage_6.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Problem}
+
+  \begin{block}{Including scripts}
+    {\scriptsize
+    \begin{verbatim}
+    <html>
+      <head>
+        <script src=``js/game.js''></script>
+        <script src=``js/character.js''></script>
+        <script src=``js/player.js''></script>
+        <script src=``js/enemy.js''></script>
+        <script src=``js/knight.js''></script>
+        <script src=``js/soldier.js''></script>
+        <script src=``js/protector.js''></script>
+        ...
+    \end{verbatim}
+    }
+  \end{block}
+
+  \pause
+  
+  \begin{itemize}
+    \item We need to remember the inclusion order 
+    \item Each module, function or object must be accessible through global scope if we want to use it as a dependency.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Possible solution}
+
+  \begin{block}{index.html}
+    {\tiny
+    \begin{verbatim}
+    <html>
+      <head>
+        <script src=``js/built.js''></script>
+        ...
+    \end{verbatim}
+    }
+  \end{block}
+
+  \begin{block}{Gruntfile.js}
+    {\tiny
+    \begin{verbatim}
+    ...
+        concat: {
+            options: {
+                separator: ';',
+            },
+            dist: {
+                src: [
+                    'js/game.js',
+                    'js/character.js',
+                    'js/player.js',
+                    'js/enemy.js',
+                    'js/knight.js',
+                    'js/soldier.js',
+                    'js/protector.js'
+                ],
+    ...
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Require.js}
+
+  \begin{block}{A javascript module loader}
+    RequireJS is a JavaScript file and module loader. It is optimized for in-browser use, but it can be used in other JavaScript environments, like Rhino and Node. Using a modular script loader like RequireJS will improve the speed and quality of your code.
+  \end{block}
+
+  \begin{center}
+    \includegraphics[width=100px]{images/requirejs-logo.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Require.js: an example}
+
+  \begin{columns}[c]
+
+  \column{2.25in}
+  \begin{block}{Without Require.js}
+    {\scriptsize
+    \begin{verbatim}
+    var MYGAME = MYGAME || {},
+        game   = MYGAME.game,
+        entity = MYGAME.entity;
+
+    MYGAME.crate = function (spec) {
+      // code omitted
+    };
+    \end{verbatim}
+    }
+  \end{block}
+
+  \column{2.25in}
+
+  \begin{block}{With Require.js}
+    {\scriptsize
+    \begin{verbatim}
+    define(function (require) {
+      var game   = require('game'),
+          entity = require('entity'),
+          crate;
+
+      crate = function (spec) {
+      };
+
+      return crate;
+    });
+    \end{verbatim}
+    }
+  \end{block}
+
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Require.js: getting started}
+
+  \begin{block}{Get Require.js}
+  Use \texttt{bower} to install it as a dependency of your project
+  \end{block}
+
+  \pause
+
+  \begin{block}{Include it}
+    {\tiny
+    \begin{verbatim}
+    <html>
+      <head>
+        <script data-main=``scripts/main'' src=``bower_components/requirejs/require.js''></script>
+        ...
+    \end{verbatim}
+    }
+  \end{block}
+
+  \pause
+
+  \begin{block}{Define modules}
+    {\scriptsize
+    \begin{verbatim}
+    define(function (require) {
+        // code omitted
+    });
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Require.js: Lab}
+  \begin{block}{Exercise}
+    \begin{itemize}
+      \item \texttt{git checkout stage\_6}
+      \item Install your back-end dependencies with \texttt{npm install}
+      \item Install your front-end dependencies with \texttt{bower install}
+      \item Start \texttt{grunt watch} for auto linting
+      \item Install Require.js and include the main entry point
+      \item Refactor modules and functions using Require.js modules.
+    \end{itemize}
+  \end{block}
+\end{frame}
