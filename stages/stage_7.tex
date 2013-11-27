@@ -172,3 +172,89 @@
     }
   \end{block}
 \end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Callbacks}
+  \begin{block}{Callback function without \texttt{this}}
+    {\tiny
+    \begin{verbatim}
+    function chooseCharacterClass (event) {
+        var characterClass = extractCC(event);
+        player.characterClass = characterClass;
+    }
+
+    var classButtons = $('.classButton');
+    classButtons.on('click', chooseCharacterClass);
+    \end{verbatim}
+    }
+  \end{block}
+
+  \pause
+
+  \begin{block}{Callback function with \texttt{this}}
+    {\tiny
+    \begin{verbatim}
+    var player = {
+        chooseCharacterClass: function (event) {
+            var characterClass = extractCC(event);
+            this.characterClass = characterClass; // Problem
+        }
+    };
+
+    var classButtons = $('.classButton');
+    classButtons.on('click', player.chooseCharacterClass); // Warning!
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Callbacks}
+  \begin{block}{A solution using \texttt{bind}}
+    {\tiny
+    \begin{verbatim}
+    var player = {
+        chooseCharacterClass: function (event) {
+            var characterClass = extractCC(event);
+            this.characterClass = characterClass;
+        }
+    };
+
+    var classButtons = $('.classButton');
+    classButtons.on('click', player.chooseCharacterClass.bind(player));
+    \end{verbatim}
+    }
+  \end{block}
+
+  \pause
+
+  \begin{block}{Another solution using jQuery \texttt{proxy}}
+    {\tiny
+    \begin{verbatim}
+    var player = {
+        chooseCharacterClass: function (event) {
+            var characterClass = extractCC(event);
+            this.characterClass = characterClass;
+        }
+    };
+
+    var classButtons = $('.classButton');
+    classButtons.on('click', $.proxy(player.chooseCharacterClass, player));
+    \end{verbatim}
+    }
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Events: Lab}
+  \begin{block}{Exercise}
+    \begin{itemize}
+      \item \texttt{git checkout stage\_7}
+      \item Install your back-end dependencies with \texttt{npm install}
+      \item Install your front-end dependencies with \texttt{bower install}
+      \item Start \texttt{grunt watch} for auto linting
+      \item Find TODOs and complete the exercise.
+    \end{itemize}
+  \end{block}
+\end{frame}
