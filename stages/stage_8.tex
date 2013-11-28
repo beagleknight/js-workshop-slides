@@ -5,3 +5,164 @@
     %\includegraphics[width=300px]{images/map_stage_6.png}
   \end{center}
 \end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Introduction}
+
+  We are going to do our first steps on a multiplayer game using Websockets. First, we need a web server to serve our web application (our game) and handle communications between all clients connected to the server.
+
+  \pause
+
+  \begin{block}{Express.js}
+    Express is a minimal and flexible node.js web application framework, providing a robust set of features for building single and multi-page, and hybrid web applications.
+  \end{block}
+\end{frame}
+    
+\begin{frame}[fragile]
+  \frametitle{Express.js: Hello World!}
+
+  \begin{block}{Installation}
+    {\tiny
+    \begin{verbatim}
+    npm install express --save-dev
+    \end{verbatim}
+    }
+  \end{block}
+
+  \pause
+
+  \begin{block}{Hello World}
+    {\tiny
+    \begin{verbatim}
+    var express = require('express'),
+        app     = express();
+
+    app.get('/hello.txt', function(req, res){
+        var body = 'Hello World';
+        res.setHeader('Content-Type', 'text/plain');
+        res.setHeader('Content-Length', body.length);
+        res.end(body);
+    });
+
+    app.listen(9000);
+    console.log('Listening on port 9000');
+    \end{verbatim}
+    }
+  \end{block}
+
+  \pause
+
+  \begin{block}{Run server}
+    {\tiny
+    \begin{verbatim}
+    $ node index.js // Open browser and visit http://localhost:9000
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Express.js: API}
+
+  \begin{block}{Serving static files with \texttt{app.use}}
+    {\tiny
+    \begin{verbatim}
+    app.use(express.static(__dirname + '/public'));
+    \end{verbatim}
+    }
+  \end{block}
+
+  \pause
+
+  \begin{block}{Using a template engine system}
+    Install a template engine system. For example \texttt{jade}:
+    {\tiny
+    \begin{verbatim}
+    $ npm install jade --save-dev
+    \end{verbatim}
+    }
+    Use it on our Express application:
+    {\tiny
+    \begin{verbatim}
+    app.set("view engine", "jade");
+    app.set("views", __dirname + "/views");
+    \end{verbatim}
+    }
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Express.js: API}
+
+  \begin{block}{Defining routes and rendering views}
+    {\tiny
+    \begin{verbatim}
+    app.get('/about', function (req, res) {
+        res.render('about');
+    });
+
+    app.get('/credits', function (req, res) {
+      res.render('credits', { name: 'test' }); // Pass parameters to the view
+    });
+
+    app.post('/players', function (req, res) {
+        res.render('players/show');
+    });
+
+    app.put('/players', function (req, res) {
+        res.render('players/show');
+    });
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Express.js: API}
+
+  \begin{block}{Parse query parameters}
+  {\tiny
+  \begin{verbatim}
+  // GET /search?q=nintendo
+  app.get('/search', function (req, res) {
+      var q = req.query.q;
+  });
+  \end{verbatim}
+  }
+  \end{block}
+
+  \pause
+
+  \begin{block}{Parse body}
+  First, we need to use \texttt{bodyParser} middleware.
+  {\tiny
+  \begin{verbatim}
+  app.use(express.bodyParser());
+  \end{verbatim}
+  }
+  Then, we can parse body directly:
+  {\tiny
+  \begin{verbatim}
+  // POST /players player[name]=David
+  app.post('/players', function (req, res) {
+      var playerData = req.body.player,
+          playerName = playerData.name;
+  });
+  \end{verbatim}
+  }
+
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Express.js: Lab}
+
+  \begin{itemize}
+    \item \texttt{git checkout stage\_8\_1}
+    \item Install your back-end dependencies with \texttt{npm install}
+    \item Install your front-end dependencies with \texttt{bower install}
+    \item Start \texttt{grunt watch} for auto linting
+    \item Find TODOs and complete the exercise.
+  \end{itemize}
+\end{frame}
