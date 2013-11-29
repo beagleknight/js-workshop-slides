@@ -55,7 +55,7 @@
   \begin{block}{Run server}
     {\tiny
     \begin{verbatim}
-    $ node index.js // Open browser and visit http://localhost:9000
+    $ node index.js // Open browser and visit http://localhost:9000/hello.txt
     \end{verbatim}
     }
   \end{block}
@@ -160,6 +160,156 @@
 
   \begin{itemize}
     \item \texttt{git checkout stage\_8\_1}
+    \item Install your back-end dependencies with \texttt{npm install}
+    \item Install your front-end dependencies with \texttt{bower install}
+    \item Start \texttt{grunt watch} for auto linting
+    \item Find TODOs and complete the exercise.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Websockets}
+
+  Without Websockets we have the limitation of unidirectional communication between server and client. We can emulate some kind of bidirectional communication using AJAX and polling but it's a poor option in real-time applications.
+
+  \pause
+
+  \begin{block}{Socket.io}
+    Socket.IO aims to make realtime apps possible in every browser and mobile device, blurring the differences between the different transport mechanisms. It's care-free realtime 100\% in JavaScript.
+  \end{block}
+\end{frame}
+    
+\begin{frame}[fragile]
+  \frametitle{Socket.io: Hello World!}
+
+  \begin{block}{Installation}
+    {\tiny
+    \begin{verbatim}
+    npm install socket.io --save-dev
+    \end{verbatim}
+    }
+  \end{block}
+
+  \pause
+
+  \begin{block}{Server-side}
+    {\tiny
+    \begin{verbatim} 
+    var express = require('express'),
+        http    = require('http'),
+        app     = express(),
+        server  = http.createServer(app)
+        io      = require('socket.io').listen(server);
+      
+      // code omitted
+      
+      io.sockets.on('connection', function (socket) {
+          socket.emit('news', { hello: 'world' });
+          socket.on('my other event', function (data) {
+              console.log(data);
+          });
+      });
+
+      // Replace app.listen with this
+      server.listen(9000);
+    \end{verbatim} 
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Socket.io: Hello World!}
+
+  \begin{block}{Require.js configuration}
+    {\tiny
+    \begin{verbatim}
+    requirejs.config({
+        // code omitted
+        paths: {
+            'io': '/socket.io/socket.io'
+        }
+    });
+    \end{verbatim}
+    }
+  \end{block}
+
+  \pause
+
+  \begin{block}{Client-side}
+    {\tiny
+    \begin{verbatim}
+      var io     = require('io'),
+          socket = io.connect();
+
+      socket.on('news', function (data) {
+          console.log(data);
+          socket.emit('my other event', { my: 'data' });
+      });
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Socket.io: API}
+
+  \begin{block}{Send and receive messages}
+  {\tiny
+  \begin{verbatim}
+  socket.on('message', function (data) {
+      var player = data.player;
+  });
+
+  socket.emit('message', { player: 'player1' });
+  \end{verbatim}
+  }
+  \end{block}
+
+  \pause
+
+  \begin{block}{Broadcast messages}
+  {\tiny
+  \begin{verbatim}
+  // On the server side
+  socket.broadcast.emit('player logout', { player: 'player1' });
+  \end{verbatim}
+  }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Socket.io: API}
+
+  \begin{block}{Store information associated to a client}
+  {\tiny
+  \begin{verbatim}
+  // On the server side
+  socket.set('playerId', 'player', function () {
+      socket.emit('player saved');
+  });
+  \end{verbatim}
+  }
+  \end{block}
+
+  \pause
+
+  \begin{block}{Retrieve information associated to a client}
+  {\tiny
+  \begin{verbatim}
+  // On the server side
+  socket.get('playerId', function (err, player) {
+      socket.emit('player loaded', { player: player });
+  });
+  \end{verbatim}
+  }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Socket.io: Lab}
+
+  \begin{itemize}
+    \item \texttt{git checkout stage\_8\_2}
     \item Install your back-end dependencies with \texttt{npm install}
     \item Install your front-end dependencies with \texttt{bower install}
     \item Start \texttt{grunt watch} for auto linting
