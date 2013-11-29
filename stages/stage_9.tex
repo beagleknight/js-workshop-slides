@@ -1,0 +1,140 @@
+\section{Stage 9: Persistance with RedisDB}
+
+\begin{frame}[fragile]
+  \begin{center}
+    %\includegraphics[width=300px]{images/map_stage_6.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Persistance}
+
+  We stored player positions on a simple object on the server-side code. If we reboot the server we will lose these values.
+
+  \begin{block}{Simple object lost when server restarts}
+    {\scriptsize
+    \begin{verbatim}
+    var playerPositions = {
+        player1: { x: 100, y: 200 },
+        player2: { x: 100, y: 400 },
+        player3: { x: 700, y: 200 },
+        player4: { x: 700, y: 400 }
+    };
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{RedisDB}
+  \begin{block}{Website definition}
+    Redis is an open source, BSD licensed, advanced key-value store. It is often referred to as a data structure server since keys can contain strings, hashes, lists, sets and sorted sets.
+  \end{block}
+
+  \begin{center}
+    \includegraphics[width=100px]{images/redis-logo.jpg}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{RedisDB: Installation}
+
+  \begin{block}{From source code}
+    {\tiny
+    \begin{verbatim}
+    $ wget http://download.redis.io/redis-stable.tar.gz
+    $ tar xvzf redis-stable.tar.gz
+    $ cd redis-stable
+    $ make
+    \end{verbatim}
+    }
+  \end{block}
+
+  \pause
+
+  \begin{block}{Copy executable and default configuration}
+    {\tiny
+    \begin{verbatim}
+    $ sudo cp src/redis-server /usr/local/bin/ 
+    $ sudo cp src/redis-cli /usr/local/bin/ 
+    $ sudo cp redis.conf /etc/redis.conf
+    \end{verbatim}
+    }
+  \end{block}
+
+  \pause
+
+  \begin{block}{Run server}
+    {\tiny
+    \begin{verbatim}
+    $ redis-server
+    [28550] 01 Aug 19:29:28 # Warning: no config file specified, using the default config...
+    [28550] 01 Aug 19:29:28 * Server started, Redis version 2.2.12
+    [28550] 01 Aug 19:29:28 * The server is now ready to accept connections on port 6379
+    ...
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{RedisDB: Client}
+
+  \begin{block}{Installation}
+    {\tiny
+    \begin{verbatim}
+    npm install redis --save-dev
+    \end{verbatim}
+    }
+  \end{block}
+
+  \pause
+
+  \begin{block}{Create client on our code}
+    {\tiny
+    \begin{verbatim}
+    var redis = require('redis'),
+        redisClient = redis.createClient();
+    \end{verbatim}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{RedisDB: Commands}
+   In this workshop we are going to use one Redis data structure: a Hash
+
+   \pause
+
+   \begin{block}{Get all fields and values from a hash}
+     {\tiny
+     \begin{verbatim}
+     redisClient.hgetall('myHash', function (err, result) {
+         // result is converted on a Javascript object
+     });
+     \end{verbatim}
+     }
+   \end{block}
+
+   \begin{block}{Store some fields and values to a hash}
+     {\tiny
+     \begin{verbatim}
+     redisClient.hmset(['myHash', 'key1', 'value1', 'key2', 'value2'], function (err, result) {
+        // code omitted
+     });
+     \end{verbatim}
+     }
+   \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{RedisDB: Lab}
+
+  \begin{itemize}
+    \item \texttt{git checkout stage\_9}
+    \item Install your back-end dependencies with \texttt{npm install}
+    \item Install your front-end dependencies with \texttt{bower install}
+    \item Start \texttt{grunt watch} for auto linting
+    \item Find TODOs and complete the exercise.
+  \end{itemize}
+\end{frame}
